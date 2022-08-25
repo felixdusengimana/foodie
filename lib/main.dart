@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import './screens/categories.dart';
+import './screens/category_meal.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +12,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Foodie',
-      home: const CategoriesScreen(),
       theme: ThemeData(
           primarySwatch: Colors.pink,
           accentColor: Colors.amber,
@@ -35,6 +36,12 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           )),
+      // home: const CategoriesScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (ctx) => const CategoriesScreen(),
+        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
+      },
     );
   }
 }
