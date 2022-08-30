@@ -51,6 +51,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  bool _isMealFavorite(String id) {
+    return _favoriteMeals.any((meal) => meal.id == id);
+  }
+
   void _toggleFavMeal(String mealId) {
     final existingIndex =
         _favoriteMeals.indexWhere((meal) => meal.id == mealId);
@@ -101,7 +105,8 @@ class _MyAppState extends State<MyApp> {
         '/': (ctx) => TabsScreen(_favoriteMeals),
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(_availableMeals),
-        MealDetailsScreen.routeName: (ctx) => MealDetailsScreen(),
+        MealDetailsScreen.routeName: (ctx) =>
+            MealDetailsScreen(_toggleFavMeal, _isMealFavorite),
         FilterScreen.routerName: (ctx) => FilterScreen(_setFilters, _filters),
       },
     );

@@ -1,5 +1,7 @@
-import '../models/meal.dart';
 import 'package:flutter/material.dart';
+
+import '../models/meal.dart';
+import '../widgets/meal_item.dart';
 
 class FavoriteScreen extends StatelessWidget {
   final List<Meal> favoriteMeals;
@@ -7,8 +9,22 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Favorites"),
-    );
+    return favoriteMeals.isEmpty
+        ? const Center(
+            child: Text("Favorites"),
+          )
+        : ListView.builder(
+            itemBuilder: (ctx, index) {
+              return MealItem(
+                id: favoriteMeals[index].id,
+                title: favoriteMeals[index].title,
+                imageUrl: favoriteMeals[index].imageUrl,
+                duration: favoriteMeals[index].duration,
+                affordability: favoriteMeals[index].affordability,
+                complexity: favoriteMeals[index].complexity,
+              );
+            },
+            itemCount: favoriteMeals.length,
+          );
   }
 }
