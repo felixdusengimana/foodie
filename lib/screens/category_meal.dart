@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
+import '../widgets/meal_item.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
+class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';
 
+  @override
+  State<CategoryMealsScreen> createState() => _CategoryMealsScreenState();
+}
+
+class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
   // final String id;
-  // final String title;
-
-  // const CategoryMealsScreen(this.id, this.title);
-
   @override
   Widget build(BuildContext context) {
     final routerArgs =
@@ -27,8 +29,14 @@ class CategoryMealsScreen extends StatelessWidget {
       ),
       body: ListView.builder(
           itemBuilder: (context, index) {
-            return Center(
-              child: Text(catMeals[index].title),
+            return MealItem(
+              id: catMeals[index].id,
+              title: catMeals[index].title,
+              imageUrl: catMeals[index].imageUrl,
+              duration: catMeals[index].duration,
+              complexity: catMeals[index].complexity,
+              affordability: catMeals[index].affordability,
+              removeItem: () {},
             );
           },
           itemCount: catMeals.length),
