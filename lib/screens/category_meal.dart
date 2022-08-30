@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../dummy_data.dart';
 import '../widgets/meal_item.dart';
+import '../models/meal.dart';
 
 class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';
@@ -11,21 +12,42 @@ class CategoryMealsScreen extends StatefulWidget {
 }
 
 class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
+  String catTitle = '';
+  List<Meal> catMeals = [];
+  bool _loadedInitData = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_loadedInitData) {
+      final routerArgs =
+          ModalRoute.of(context)?.settings.arguments as Map<String, String>;
+      final catId = routerArgs['id'];
+      catTitle = routerArgs['title'].toString();
+
+      catMeals = DUMMY_MEALS.where((meal) {
+        return meal.categories.contains(catId);
+      }).toList();
+    }
+    super.didChangeDependencies();
+  }
+
+  void _removeMeal(String mealId) {
+    setState(() {
+      catMeals.removeWhere((meal) => meal.id == mealId);
+    });
+  }
+
   // final String id;
   @override
   Widget build(BuildContext context) {
-    final routerArgs =
-        ModalRoute.of(context)?.settings.arguments as Map<String, String>;
-    final catId = routerArgs['id'];
-    final catTitle = routerArgs['title'];
-
-    final catMeals = DUMMY_MEALS.where((meal) {
-      return meal.categories.contains(catId);
-    }).toList();
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(catTitle!),
+        title: Text(catTitle),
       ),
       body: ListView.builder(
           itemBuilder: (context, index) {
@@ -36,7 +58,7 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
               duration: catMeals[index].duration,
               complexity: catMeals[index].complexity,
               affordability: catMeals[index].affordability,
-              removeItem: () {},
+              removeItem: _removeMeal,
             );
           },
           itemCount: catMeals.length),
